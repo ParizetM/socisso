@@ -1,23 +1,19 @@
 <nav x-data="{ open: false }" class="bg-[#FFF9F9] border-b border-[#F44171]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-20">
+        <div class="flex justify-between h-30">
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <img class="h-12 w-auto lg:h-16" src="./images/socisso-logo.png" alt="Socisso" />
+                        <img class="h-16 w-auto lg:h-24" src="./images/socisso-logo.png" alt="Socisso" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
-                        class="text-black hover:text-[#F44171] transition-colors {{ request()->routeIs('dashboard') ? 'border-b-2 border-[#F44171] text-[#F44171]' : '' }}">
+                        class="text-black hover:text-[#F44171] transition-colors {{ request()->routeIs('dashboard') ? 'border-b-2 border-[#F44171] text-black' : '' }}">
                         {{ __('Dashboard') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')"
-                        class="text-black hover:text-[#F44171] transition-colors {{ request()->routeIs('welcome') ? 'border-b-2 border-[#F44171] text-[#F44171]' : '' }}">
-                        {{ __('welcome') }}
                     </x-nav-link>
                 </div>
             </div>
