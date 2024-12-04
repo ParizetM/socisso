@@ -6,6 +6,7 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Silber\Bouncer\BouncerFacade as Bouncer;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,11 +17,20 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
+
+        $admin = User::factory()->create([
             'nom' => 'ADMIN',
             'prenom' => 'admin',
             'email' => 'admin@socisso.fr',
             'password' => Hash::make('Socisso$2024$Admin')
         ]);
+        Bouncer::role()->firstOrCreate(['name' => 'admin', 'title' => 'Administrateur']);
+        Bouncer::role()->firstOrCreate(['name' => 'user', 'title' => 'Utilisateur']);
+        Bouncer::allow('admin')->everything();
+        Bouncer::allow('user')->to('view', User::class);
+        Bouncer::allow('user')->to('update', User::class);
+        Bouncer::allow('user')->to('delete', User::class);
+        Bouncer::assign('admin')->to($admin);
+
     }
 }
