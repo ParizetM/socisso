@@ -32,5 +32,8 @@
                 </tbody>
             </table>
         </div>
+        <a href="{{ route('payments.create') }}" class="p-4 bg-white rounded-lg border text-[#F44171] border-[#F44171]/20 hover:bg-[#F44171] hover:text-white transition-colors duration-150 wi">
+            <h3 class="text-lg font-medium text-center">Créer un paiment</h3>
+        </a>
     </div>
 </x-app-layout>
