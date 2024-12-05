@@ -110,6 +110,7 @@ class RegisteredUserController extends Controller
                 'confirmed',
                 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]/'
             ],
+            'captcha' => 'required|captcha'
         ], $messages);
 
         if ($validator->fails()) {

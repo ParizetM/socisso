@@ -36,7 +36,16 @@
                         <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required />
                         <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                     </div>
-
+                    <div class="mb-4">
+                        <label for="captcha" class="block font-medium text-sm text-gray-700">Captcha</label>
+                        <div>
+                        <img src="{{ Captcha::src('mini') }}" alt="captcha" class="mb-2">
+                        <input type="text" name="captcha" id="captcha" required class="w-full border border-gray-300 rounded px-3 py-2" placeholder="Entrez le captcha">
+                        </div>
+                        @error('captcha')
+                        <small class="text-red-500">{{ $message }}</small>
+                        @enderror
+                    </div>
                     <div class="text-center">
                         <x-primary-button class="w-full justify-center">
                             {{ __('Register') }}

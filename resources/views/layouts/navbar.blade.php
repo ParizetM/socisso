@@ -18,12 +18,15 @@
                             {{ __('Dashboard') }}
                         </x-nav-link>
                     </div>
+                    @can('admin')
+                    @else
                     <div class="hidden space-x-8 sm:ms-10 sm:flex items-center">
                         <x-nav-link :href="route('payments.index')" :active="request()->routeIs('payments.index')"
                             class="text-black hover:text-[#F44171] transition-colors {{ request()->routeIs('dashboard') ? 'border-b-2 border-[#F44171] text-black' : '' }}">
                             {{ __('Paiments') }}
                         </x-nav-link>
                     </div>
+                    @endcan
                 @endauth
             </div>
 
