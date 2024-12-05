@@ -4,7 +4,7 @@
             <div class="flex items-center">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('welcome') }}">
                         <img class="h-20 w-auto" src="./images/socisso-logo.png" alt="Socisso" />
                     </a>
                 </div>
