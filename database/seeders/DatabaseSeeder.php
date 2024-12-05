@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
         Bouncer::allow('user')->to('update', User::class);
         Bouncer::allow('user')->to('delete', User::class);
         Bouncer::assign('admin')->to($admin);
-
+        Bouncer::allow('user')->to('view-payments');
+        Bouncer::allow('admin')->to(['view-payments', 'manage-payments']);
     }
 }

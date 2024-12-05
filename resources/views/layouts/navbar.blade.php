@@ -17,6 +17,12 @@
                             {{ __('Dashboard') }}
                         </x-nav-link>
                     </div>
+                    <div class="hidden space-x-8 sm:ms-10 sm:flex items-center">
+                        <x-nav-link :href="route('payments.index')" :active="request()->routeIs('payments.index')"
+                            class="text-black hover:text-[#F44171] transition-colors {{ request()->routeIs('dashboard') ? 'border-b-2 border-[#F44171] text-black' : '' }}">
+                            {{ __('Paiments') }}
+                        </x-nav-link>
+                    </div>
                 @endauth
             </div>
 
@@ -50,6 +56,10 @@
                                         {{ __('Log Out') }}
                                     </x-dropdown-link>
                                 </form>
+                                <x-dropdown-link :href="route('payments.all')"
+                                    class="text-gray-700 hover:bg-[#F44171] hover:text-white">
+                                    {{ __('Tout les paiments') }}
+                                </x-dropdown-link>
                             </div>
                         </x-slot>
                     </x-dropdown>

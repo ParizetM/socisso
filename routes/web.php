@@ -3,7 +3,6 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\RefundController;
 
 
 Route::get('/', function () {
@@ -19,15 +18,20 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-Route::middleware(['auth'])->group(function () {
-    Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
-    Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
-});
 
-// Routes pour les administrateurs (authentification et autorisation nécessaire)
-Route::middleware(['auth', 'can:admin'])->group(function () {
-    Route::get('/admin/payments', [PaymentController::class, 'adminIndex'])->name('admin.payments.index');
-    Route::post('/admin/payments/{payment}/refund', [RefundController::class, 'store'])->name('admin.payments.refund');
+Route::middleware(['auth'])->group(function () {
+    // Paiements pour un utilisateur
+    Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
+
+    // Paiements pour un administrateur
+    Route::get('/admin/payments', [PaymentController::class, 'allPayments'])->name('payments.all')->middleware('can:manage-payments');
+
+    // Remboursement
+    Route::post('/admin/payments/refund/{transactionId}', [PaymentController::class, 'refund'])->name('payments.refund')->middleware('can:manage-payments');
+});
+Route::middleware(['auth'])->group(function () {
+    Route::get('/payments/create', [PaymentController::class, 'create'])->name('payments.create');
+    Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
 });
 
 require __DIR__.'/auth.php';

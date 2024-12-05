@@ -1,27 +1,36 @@
 <!-- resources/views/payments/index.blade.php -->
 <x-app-layout>
-
-<div class="container">
-    <h1>Mes Paiements</h1>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Montant</th>
-                <th>Numéro de carte</th>
-                <th>Date d'expiration</th>
-                <th>Date de paiement</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($payments as $payment)
-            <tr>
-                <td>{{ $payment->amount }}</td>
-                <td>{{ substr($payment->card_number, 0, 4) }}****{{ substr($payment->card_number, -4) }}</td>
-                <td>{{ $payment->card_expiry }}</td>
-                <td>{{ $payment->created_at }}</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+    <div class="container mx-auto py-8">
+        <h1 class="text-2xl font-bold mb-6">Mes Paiements</h1>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-700">
+                        <th class="py-2 px-4 border-b">Montant</th>
+                        <th class="py-2 px-4 border-b">Numéro de carte</th>
+                        <th class="py-2 px-4 border-b">Date d'expiration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($payments as $payment)
+                        <tr class="hover:bg-gray-100">
+                            <td class="py-2 px-4 border-b">
+                                @if ($payment['refunded'] == true)
+                                    <span class="line-through">{{ number_format($payment['amount'], 2) }} €</span> <span class="text-green-500">Remboursé</span>
+                                @else
+                                    {{ number_format($payment['amount'], 2) }} €
+                                @endif
+                            </td>
+                            <td class="py-2 px-4 border-b">{{ $payment['card_number'] }}</td>
+                            <td class="py-2 px-4 border-b">{{ $payment['expiration_date'] }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="3" class="py-4 px-4 text-center text-gray-500">Aucun paiement trouvé.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
 </x-app-layout>
