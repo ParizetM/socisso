@@ -5,7 +5,7 @@
                 <!-- Logo -->
                 <div class="flex items-center">
                     <a href="{{ route('welcome') }}">
-                        <img class="h-20 w-auto" src="./images/socisso-logo.png" alt="Socisso" />
+                        <img class="h-20 w-auto" src="{{ asset('images/socisso-logo.png') }}" alt="Socisso" />
                     </a>
                 </div>
 
