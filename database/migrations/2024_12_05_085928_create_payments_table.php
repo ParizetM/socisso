@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('cvv')->nullable(); // Si besoin, mais chiffrez-le également
             $table->string('transaction_id'); // Numéro unique de transaction
             $table->boolean('refunded')->default(false);
+            $table->timestamp('refunded_at')->nullable();
+            $table->decimal('refunded_amount', 10, 2)->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

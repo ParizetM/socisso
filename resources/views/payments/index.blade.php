@@ -6,6 +6,7 @@
             <table class="min-w-full bg-white border border-gray-300">
                 <thead>
                     <tr class="bg-gray-200 text-gray-700">
+                        <th class="py-2 px-4 border-b">id de transaction</th>
                         <th class="py-2 px-4 border-b">Montant</th>
                         <th class="py-2 px-4 border-b">Numéro de carte</th>
                         <th class="py-2 px-4 border-b">Date d'expiration</th>
@@ -14,9 +15,18 @@
                 <tbody>
                     @forelse ($payments as $payment)
                         <tr class="hover:bg-gray-100">
+                            <td class="py-2 px-4 border-b">{{ $payment['transaction_id'] }}</td>
                             <td class="py-2 px-4 border-b">
                                 @if ($payment['refunded'] == true)
-                                    <span class="line-through">{{ number_format($payment['amount'], 2) }} €</span> <span class="text-green-500">Remboursé</span>
+                                    <span class="line-through">{{ number_format($payment['amount'], 2) }} €</span>
+                                    <br>
+                                    <span class="text-green-500">{{ number_format($payment['refunded_amount'], 2) }} €
+                                        Remboursé le
+                                        {{ \Carbon\Carbon::parse($payment['refunded_at'])->format('d/m/Y') }}</span>
+                                    <br>
+                                    <span>
+                                        {{ number_format($payment['amount'] - $payment['refunded_amount'], 2) }} €
+                                    </span>
                                 @else
                                     {{ number_format($payment['amount'], 2) }} €
                                 @endif
@@ -32,8 +42,11 @@
                 </tbody>
             </table>
         </div>
-        <a href="{{ route('payments.create') }}" class="p-4 bg-white rounded-lg border text-[#F44171] border-[#F44171]/20 hover:bg-[#F44171] hover:text-white transition-colors duration-150 wi">
-            <h3 class="text-lg font-medium text-center">Créer un paiment</h3>
-        </a>
+        <div>
+            <a href="{{ route('payments.create') }}"
+                class=" mt-2 block p-4 bg-white rounded-lg border text-[#F44171] border-[#F44171]/20 hover:bg-[#F44171] hover:text-white transition-colors duration-150 w-full">
+                <h3 class="text-lg font-medium text-center">Créer un paiement</h3>
+            </a>
+        </div>
     </div>
 </x-app-layout>

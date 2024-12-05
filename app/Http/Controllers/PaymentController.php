@@ -22,6 +22,9 @@ class PaymentController extends Controller
                 'card_number' => substr($payment->card_number, 0, 4) . '****' . substr($payment->card_number, -4),
                 'expiration_date' => \Carbon\Carbon::createFromFormat('Y-m-d', $payment->expiration_date)->format('m/Y'),
                 'refunded' => $payment->refunded,
+                'refunded_amount' => $payment->refunded_amount,
+                'refunded_at' => $payment->refunded_at,
+                'transaction_id' => $payment->transaction_id,
             ];
         });
 
@@ -38,6 +41,8 @@ class PaymentController extends Controller
                 'card_number' => '****' . substr($payment->card_number, -4),
                 'expiration_date' => \Carbon\Carbon::createFromFormat('Y-m-d', $payment->expiration_date)->format('m/Y'),
                 'refunded' => $payment->refunded,
+                'refunded_amount' => $payment->refunded_amount,
+                'refunded_at' => $payment->refunded_at,
             ];
         });
 
@@ -45,15 +50,24 @@ class PaymentController extends Controller
     }
     public function refund(Request $request, $transactionId)
     {
+        $validate = $request->validate([
+            'amount_refund' => 'required|numeric|min:0.01|max:' . Payment::where('transaction_id', $transactionId)->firstOrFail()->amount,
+        ], [
+            'amount_refund' => 'Le montant est obligatoire.',
+            'amount_refund.numeric' => 'Le montant doit être un nombre.',
+            'amount_refund.min' => 'Le montant doit être supérieur à 0.',
+            'amount_refund.max' => 'Le montant ne peut pas être supérieur au montant initial.',
+        ]);
+
+
 
         $payment = Payment::where('transaction_id', $transactionId)->firstOrFail();
-
         // Logique de remboursement (API d'un prestataire, ex : Stripe ou PayPal)
-
-            $payment->refunded = true;
-            $payment->save();
-            return redirect()->back()->with('success', 'Remboursement effectué.');
-
+        $payment->refunded_amount = $validate['amount_refund'];
+        $payment->refunded = true;
+        $payment->refunded_at = now();
+        $payment->save();
+        return redirect()->back()->with('success', 'Remboursement effectué.');
     }
     public function create()
     {
@@ -63,9 +77,15 @@ class PaymentController extends Controller
     {
         $validated = $request->validate([
             'amount' => 'required|numeric|min:0.01',
-            'card_number' => 'required|string|size:16',
-            'expiration_date' => 'required|date_format:m/y',
+            'card_number' => ['required', 'regex:/^\d{4} \d{4} \d{4} \d{4}$/'],
+            'expiration_date' => ['required', 'date_format:m/y', function ($attribute, $value, $fail) {
+                $expirationDate = \Carbon\Carbon::createFromFormat('m/y', $value)->startOfMonth();
+                if ($expirationDate->isPast()) {
+                    $fail('La date d\'expiration ne peut pas être dans le passé.');
+                }
+            }],
             'cvc' => 'required|string|size:3',
+            'captcha' => 'required|captcha',
         ], [
             'amount.required' => 'Le montant est obligatoire.',
             'amount.numeric' => 'Le montant doit être un nombre.',
@@ -75,9 +95,13 @@ class PaymentController extends Controller
             'card_number.size' => 'Le numéro de carte doit contenir 16 chiffres.',
             'expiration_date.required' => 'La date d\'expiration est obligatoire.',
             'expiration_date.date_format' => 'La date d\'expiration doit être au format mm/aa.',
+            'expiration_date' => 'La date d\'expiration ne peut pas être dans le passé.',
             'cvc.required' => 'Le code CVC est obligatoire.',
             'cvc.string' => 'Le code CVC doit être une chaîne de caractères.',
             'cvc.size' => 'Le code CVC doit contenir 3 chiffres.',
+            'captcha.required' => 'Le captcha est obligatoire.',
+            'captcha.captcha' => 'Le captcha est incorrect.',
+            'validation.captcha' => 'Le captcha est incorrect.',
         ]);
 
         // Simuler l'enregistrement (attention aux données sensibles)

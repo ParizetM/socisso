@@ -1,3 +1,4 @@
+
 <nav x-data="{ open: false }" class="bg-[#FFF9F9] border-b border-[#F44171]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-24">
@@ -56,10 +57,13 @@
                                         {{ __('Log Out') }}
                                     </x-dropdown-link>
                                 </form>
+                                @can('admin')
                                 <x-dropdown-link :href="route('payments.all')"
                                     class="text-gray-700 hover:bg-[#F44171] hover:text-white">
                                     {{ __('Tout les paiments') }}
                                 </x-dropdown-link>
+                                @endcan
+
                             </div>
                         </x-slot>
                     </x-dropdown>
