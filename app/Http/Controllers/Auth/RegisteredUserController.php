@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Http\Middleware\XSS;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,12 +18,12 @@ class RegisteredUserController extends Controller
     /**
      * Nombre maximum de tentatives d'inscription par IP
      */
-    private const MAX_ATTEMPTS = 5;
+    private const MAX_ATTEMPTS = 30;
 
     /**
      * Temps de blocage en minutes après dépassement des tentatives
      */
-    private const DECAY_MINUTES = 60;
+    private const DECAY_MINUTES = 1;
 
     /**
      * Display the registration view.
@@ -119,10 +118,9 @@ class RegisteredUserController extends Controller
                 ->withInput($request->except('password', 'password_confirmation'));
         }
 
-        // Nettoyage XSS des entrées
-        $nom = XSSClean::clean($request->nom);
-        $prenom = XSSClean::clean($request->prenom);
-        $email = XSSClean::clean($request->email);
+        $nom = $request->nom;
+        $prenom = $request->prenom;
+        $email = $request->email;
 
         // Création de l'utilisateur avec les données nettoyées
         $user = User::create([
