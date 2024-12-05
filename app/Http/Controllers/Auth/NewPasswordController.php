@@ -28,19 +28,38 @@ class NewPasswordController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $messages = [
+            'token.required' => 'Le jeton de réinitialisation est requis',
+
+            'email.required' => 'L\'adresse email est requise',
+            'email.email' => 'L\'adresse email doit être une adresse email valide',
+
+            'password.required' => 'Le nouveau mot de passe est requis',
+            'password.string' => 'Le mot de passe doit être une chaîne de caractères',
+            'password.min' => 'Le mot de passe doit faire au moins :min caractères',
+            'password.confirmed' => 'La confirmation du mot de passe ne correspond pas',
+            'password.regex' => [
+                '/[a-z]/' => 'Le mot de passe doit contenir au moins une minuscule',
+                '/[A-Z]/' => 'Le mot de passe doit contenir au moins une majuscule',
+                '/[0-9]/' => 'Le mot de passe doit contenir au moins un chiffre',
+                '/[@$!%*#?&]/' => 'Le mot de passe doit contenir au moins un caractère spécial (@$!%*#?&)'
+            ]
+        ];
+
         $request->validate([
             'token' => ['required'],
             'email' => ['required', 'email'],
             'password' => [
                 'required',
-                'confirmed',
+                'string',
                 'min:12',
+                'confirmed',
                 'regex:/[a-z]/',
                 'regex:/[A-Z]/',
                 'regex:/[0-9]/',
                 'regex:/[@$!%*#?&]/'
             ],
-        ]);
+        ], $messages);
 
         // Here we will attempt to reset the user's password. If it is successful we
         // will update the password on an actual user model and persist it to the
@@ -60,9 +79,19 @@ class NewPasswordController extends Controller
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
-        return $status == Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('status', __($status))
-                    : back()->withInput($request->only('email'))
-                        ->withErrors(['email' => __($status)]);
+        if ($status == Password::PASSWORD_RESET) {
+            return redirect()->route('login')->with('status', 'Votre mot de passe a été réinitialisé avec succès.');
+        }
+
+        $statusMessages = [
+            'passwords.token' => 'Ce lien de réinitialisation n\'est pas valide ou a expiré.',
+            'passwords.user' => 'Nous ne trouvons pas d\'utilisateur avec cette adresse email.',
+            'passwords.throttled' => 'Veuillez patienter avant de réessayer.',
+            'default' => 'Une erreur est survenue lors de la réinitialisation du mot de passe.'
+        ];
+
+        return back()
+            ->withInput($request->only('email'))
+            ->withErrors(['email' => $statusMessages[$status] ?? $statusMessages['default']]);
     }
 }
