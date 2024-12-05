@@ -1,17 +1,17 @@
 <nav x-data="{ open: false }" class="bg-[#FFF9F9] border-b border-[#F44171]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-30">
-            <div class="flex">
+        <div class="flex justify-between items-center h-24">
+            <div class="flex items-center">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
+                <div class="flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <img class="h-16 w-auto lg:h-24" src="./images/socisso-logo.png" alt="Socisso" />
+                        <img class="h-20 w-auto" src="./images/socisso-logo.png" alt="Socisso" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 @auth
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <div class="hidden space-x-8 sm:ms-10 sm:flex items-center">
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
                             class="text-black hover:text-[#F44171] transition-colors {{ request()->routeIs('dashboard') ? 'border-b-2 border-[#F44171] text-black' : '' }}">
                             {{ __('Dashboard') }}
@@ -21,7 +21,7 @@
             </div>
 
             <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <div class="hidden sm:flex sm:items-center">
                 @auth
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
@@ -70,7 +70,7 @@
             </div>
 
             <!-- Mobile menu button -->
-            <div class="-me-2 flex items-center sm:hidden">
+            <div class="flex items-center sm:hidden">
                 <button @click="open = ! open" class="p-2 rounded-md text-gray-700 hover:text-[#F44171] focus:outline-none transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
