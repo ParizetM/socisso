@@ -41,6 +41,7 @@ Pour installer le projet Laravel, suivez ces étapes :
     ```
 9. **Compiler le CSS :**
     ```bash
+    npm install
     npm run build
     ```
 Socisso devrait maintenant être opérationnel.
