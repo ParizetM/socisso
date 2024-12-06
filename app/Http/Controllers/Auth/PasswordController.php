@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class PasswordController extends Controller
 {
@@ -31,7 +32,8 @@ class PasswordController extends Controller
             ]
         ];
 
-        $validated = $request->validateWithBag('updatePassword', [
+        // Utilisation de Validator pour avoir un contrôle plus précis sur la validation
+        $validator = Validator::make($request->all(), [
             'current_password' => ['required', 'current_password'],
             'password' => [
                 'required',
@@ -39,17 +41,22 @@ class PasswordController extends Controller
                 'min:12',
                 'confirmed',
                 'different:current_password',
-                'regex:/[a-z]/',
-                'regex:/[A-Z]/',
-                'regex:/[0-9]/',
-                'regex:/[@$!%*#?&]/'
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]/'
             ],
         ], $messages);
+
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator->errors(), 'updatePassword')
+                ->withInput();
+        }
+
+        $validated = $validator->validated();
 
         $request->user()->update([
             'password' => Hash::make($validated['password']),
         ]);
 
-        return back()->with('status', 'Votre mot de passe a été mis à jour avec succès.');
+        return back()->with('status', 'password-updated');
     }
 }
