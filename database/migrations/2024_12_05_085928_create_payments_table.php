@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->decimal('amount', 10, 2);
+            $table->string('titulaire_nom');
+            $table->string('titulaire_prenom');
             $table->string('card_number'); // Enregistré sous forme chiffrée
             $table->date('expiration_date');
             $table->string('cvv')->nullable(); // Si besoin, mais chiffrez-le également

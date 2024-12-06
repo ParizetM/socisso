@@ -25,6 +25,9 @@
                                             Montant
                                         </th>
                                         <th scope="col" class="px-6 py-4 text-left text-sm font-medium text-gray-700">
+                                            Titulaire de la carte
+                                        </th>
+                                        <th scope="col" class="px-6 py-4 text-left text-sm font-medium text-gray-700">
                                             Carte
                                         </th>
                                         <th scope="col" class="px-6 py-4 text-left text-sm font-medium text-gray-700">
@@ -80,6 +83,9 @@
                                                         </span>
                                                     @endif
                                                 </div>
+                                            </td>
+                                            <td class="py-3 px-4 border-b border-[#F44171]/20">
+                                                {{ $payment['titulaire_nom'] }} {{ $payment['titulaire_prenom'] }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="text-sm text-gray-900 font-mono">

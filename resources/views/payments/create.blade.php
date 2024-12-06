@@ -6,12 +6,14 @@
                     <!-- En-tête -->
                     <div class="text-center mb-8">
                         <h1 class="text-3xl font-semibold text-[#F44171]">Effectuer un Paiement</h1>
-                        <p class="text-gray-600 mt-2">Remplissez les informations ci-dessous pour finaliser votre paiement</p>
+                        <p class="text-gray-600 mt-2">Remplissez les informations ci-dessous pour finaliser votre
+                            paiement</p>
                     </div>
 
                     <div class="max-w-2xl mx-auto">
                         <!-- Carte de paiement -->
-                        <div class="bg-gradient-to-r from-[#F44171] to-[#F44171]/80 p-6 rounded-xl shadow-lg mb-8 text-white">
+                        <div
+                            class="bg-gradient-to-r from-[#F44171] to-[#F44171]/80 p-6 rounded-xl shadow-lg mb-8 text-white">
                             <div class="flex justify-between items-start mb-8">
                                 <div class="space-y-1">
                                     <p class="text-sm opacity-80">Numéro de carte</p>
@@ -32,7 +34,8 @@
                         </div>
 
                         <!-- Formulaire -->
-                        <form action="{{ route('payments.store') }}" method="POST" class="bg-white rounded-xl shadow-lg p-8 space-y-6">
+                        <form action="{{ route('payments.store') }}" method="POST"
+                            class="bg-white rounded-xl shadow-lg p-8 space-y-6">
                             @csrf
 
                             <!-- Montant -->
@@ -44,33 +47,48 @@
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <span class="text-gray-500">€</span>
                                     </div>
-                                    <input type="number"
-                                           name="amount"
-                                           id="amount"
-                                           step="0.01"
-                                           required
-                                           class="pl-8 w-full border-[#F44171]/20 focus:border-[#F44171] focus:ring-[#F44171] rounded-lg shadow-sm"
-                                           placeholder="0.00"
-                                           value="{{ old('amount') }}">
+                                    <input type="number" name="amount" id="amount" step="0.01" required
+                                        class="pl-8 w-full border-[#F44171]/20 focus:border-[#F44171] focus:ring-[#F44171] rounded-lg shadow-sm"
+                                        placeholder="0.00" value="{{ old('amount') }}">
                                 </div>
                                 @error('amount')
                                     <p class="text-sm text-[#F44171]">{{ $message }}</p>
                                 @enderror
                             </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="space-y-2">
+                                    <label for="titulaire_nom" class="block text-sm font-medium text-gray-700">
+                                        Nom du titulaire
+                                    </label>
+                                    <input type="text" name="titulaire_nom" id="titulaire_nom"
+                                        required
+                                        class="w-full border-[#F44171]/20 focus:border-[#F44171] focus:ring-[#F44171] rounded-lg shadow-sm"
+                                        placeholder="Nom" value="{{ old('titulaire_nom') }}">
+                                    @error('titulaire_nom')
+                                        <p class="text-sm text-[#F44171]">{{ $message }}</p>
+                                    @enderror
+                                </div>
 
+                                <div class="space-y-2">
+                                    <label for="titulaire_prenom" class="block text-sm font-medium text-gray-700">
+                                        prenom du titulaire
+                                    </label>
+                                    <input type="text" name="titulaire_prenom" id="titulaire_prenom"  required
+                                        class="w-full border-[#F44171]/20 focus:border-[#F44171] focus:ring-[#F44171] rounded-lg shadow-sm"
+                                        placeholder="prénom" value="{{ old('titulaire_prenom') }}">
+                                    @error('titulaire_prenom')
+                                        <p class="text-sm text-[#F44171]">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
                             <!-- Numéro de carte -->
                             <div class="space-y-2">
                                 <label for="card_number" class="block text-sm font-medium text-gray-700">
                                     Numéro de carte
                                 </label>
-                                <input type="text"
-                                       name="card_number"
-                                       id="card_number"
-                                       maxlength="19"
-                                       required
-                                       class="w-full border-[#F44171]/20 focus:border-[#F44171] focus:ring-[#F44171] rounded-lg shadow-sm"
-                                       placeholder="1234 5678 9012 3456"
-                                       value="{{ old('card_number') }}">
+                                <input type="text" name="card_number" id="card_number" maxlength="19" required
+                                    class="w-full border-[#F44171]/20 focus:border-[#F44171] focus:ring-[#F44171] rounded-lg shadow-sm"
+                                    placeholder="1234 5678 9012 3456" value="{{ old('card_number') }}">
                                 @error('card_number')
                                     <p class="text-sm text-[#F44171]">{{ $message }}</p>
                                 @enderror
@@ -82,14 +100,10 @@
                                     <label for="expiration_date" class="block text-sm font-medium text-gray-700">
                                         Date d'expiration
                                     </label>
-                                    <input type="text"
-                                           name="expiration_date"
-                                           id="expiration_date"
-                                           maxlength="5"
-                                           required
-                                           class="w-full border-[#F44171]/20 focus:border-[#F44171] focus:ring-[#F44171] rounded-lg shadow-sm"
-                                           placeholder="MM/AA"
-                                           value="{{ old('expiration_date') }}">
+                                    <input type="text" name="expiration_date" id="expiration_date" maxlength="5"
+                                        required
+                                        class="w-full border-[#F44171]/20 focus:border-[#F44171] focus:ring-[#F44171] rounded-lg shadow-sm"
+                                        placeholder="MM/AA" value="{{ old('expiration_date') }}">
                                     @error('expiration_date')
                                         <p class="text-sm text-[#F44171]">{{ $message }}</p>
                                     @enderror
@@ -98,16 +112,12 @@
                                 <div class="space-y-2">
                                     <label for="cvc" class="block text-sm font-medium text-gray-700">
                                         Code CVC
-                                        <span class="ml-1 text-gray-400" title="Le code à 3 chiffres au dos de votre carte">ℹ️</span>
+                                        <span class="ml-1 text-gray-400"
+                                            title="Le code à 3 chiffres au dos de votre carte">ℹ️</span>
                                     </label>
-                                    <input type="text"
-                                           name="cvc"
-                                           id="cvc"
-                                           maxlength="3"
-                                           required
-                                           class="w-full border-[#F44171]/20 focus:border-[#F44171] focus:ring-[#F44171] rounded-lg shadow-sm"
-                                           placeholder="123"
-                                           value="{{ old('cvc') }}">
+                                    <input type="text" name="cvc" id="cvc" maxlength="3" required
+                                        class="w-full border-[#F44171]/20 focus:border-[#F44171] focus:ring-[#F44171] rounded-lg shadow-sm"
+                                        placeholder="123" value="{{ old('cvc') }}">
                                     @error('cvc')
                                         <p class="text-sm text-[#F44171]">{{ $message }}</p>
                                     @enderror
@@ -121,12 +131,9 @@
                                 </label>
                                 <div class="flex items-center space-x-4">
                                     <img src="{{ Captcha::src('mini') }}" alt="captcha" class="rounded-lg">
-                                    <input type="text"
-                                           name="captcha"
-                                           id="captcha"
-                                           required
-                                           class="flex-1 border-[#F44171]/20 focus:border-[#F44171] focus:ring-[#F44171] rounded-lg shadow-sm"
-                                           placeholder="Entrez le code ci-contre">
+                                    <input type="text" name="captcha" id="captcha" required
+                                        class="flex-1 border-[#F44171]/20 focus:border-[#F44171] focus:ring-[#F44171] rounded-lg shadow-sm"
+                                        placeholder="Entrez le code ci-contre">
                                 </div>
                                 @error('captcha')
                                     <p class="text-sm text-[#F44171]">{{ $message }}</p>
@@ -136,11 +143,11 @@
                             <!-- Boutons -->
                             <div class="flex items-center justify-end gap-4 pt-4">
                                 <a href="{{ route('payments.index') }}"
-                                   class="px-6 py-3 border border-[#F44171]/20 rounded-lg font-medium text-gray-700 hover:bg-[#FFF9F9] focus:outline-none focus:ring-2 focus:ring-[#F44171] focus:ring-offset-2 transition-all duration-200">
+                                    class="px-6 py-3 border border-[#F44171]/20 rounded-lg font-medium text-gray-700 hover:bg-[#FFF9F9] focus:outline-none focus:ring-2 focus:ring-[#F44171] focus:ring-offset-2 transition-all duration-200">
                                     Annuler
                                 </a>
                                 <button type="submit"
-                                        class="px-6 py-3 bg-[#F44171] rounded-lg font-medium text-white hover:bg-[#F44171]/90 focus:outline-none focus:ring-2 focus:ring-[#F44171] focus:ring-offset-2 transition-all duration-200">
+                                    class="px-6 py-3 bg-[#F44171] rounded-lg font-medium text-white hover:bg-[#F44171]/90 focus:outline-none focus:ring-2 focus:ring-[#F44171] focus:ring-offset-2 transition-all duration-200">
                                     Payer maintenant
                                 </button>
                             </div>

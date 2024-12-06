@@ -18,6 +18,7 @@
                                     <tr class="bg-[#FFF9F9] text-gray-700">
                                         <th class="py-3 px-4 border-b border-[#F44171]/20 text-left">ID de transaction</th>
                                         <th class="py-3 px-4 border-b border-[#F44171]/20 text-left">Montant</th>
+                                        <th class="py-3 px-4 border-b border-[#F44171]/20 text-left">titulaire de la carte</th>
                                         <th class="py-3 px-4 border-b border-[#F44171]/20 text-left">Numéro de carte</th>
                                         <th class="py-3 px-4 border-b border-[#F44171]/20 text-left">Date d'expiration</th>
                                     </tr>
@@ -45,6 +46,9 @@
                                                 @else
                                                     <span class="font-medium">{{ number_format($payment['amount'], 2) }} €</span>
                                                 @endif
+                                            </td>
+                                            <td class="py-3 px-4 border-b border-[#F44171]/20">
+                                                {{ $payment['titulaire_nom'] }} {{ $payment['titulaire_prenom'] }}
                                             </td>
                                             <td class="py-3 px-4 border-b border-[#F44171]/20">
                                                 <span class="font-mono">{{ $payment['card_number'] }}</span>

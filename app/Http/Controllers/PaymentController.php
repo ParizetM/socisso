@@ -16,6 +16,8 @@ class PaymentController extends Controller
         $payments = $user->payments->map(function ($payment) {
             return [
                 'amount' => $payment->amount,
+                'titulaire_nom' => $payment->titulaire_nom,
+                'titulaire_prenom' => $payment->titulaire_prenom,
                 'card_number' => substr($payment->card_number, 0, 4) . '****' . substr($payment->card_number, -4),
                 'expiration_date' => \Carbon\Carbon::createFromFormat('Y-m-d', $payment->expiration_date)->format('m/Y'),
                 'refunded' => $payment->refunded,
@@ -35,6 +37,8 @@ class PaymentController extends Controller
                 'transaction_id' => $payment->transaction_id,
                 'user' => $payment->user,
                 'amount' => $payment->amount,
+                'titulaire_nom' => $payment->titulaire_nom,
+                'titulaire_prenom' => $payment->titulaire_prenom,
                 'card_number' => '****' . substr($payment->card_number, -4),
                 'expiration_date' => \Carbon\Carbon::createFromFormat('Y-m-d', $payment->expiration_date)->format('m/Y'),
                 'refunded' => $payment->refunded,
@@ -75,6 +79,18 @@ class PaymentController extends Controller
         $validated = $request->validate([
             'amount' => 'required|numeric|min:0.01',
             'card_number' => ['required', 'regex:/^\d{4} \d{4} \d{4} \d{4}$/'],
+            'titulaire_nom' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[\p{L}\s\-\']+$/u'
+            ],
+            'titulaire_prenom' => [
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[\p{L}\s\-\']+$/u'
+            ],
             'expiration_date' => ['required', 'date_format:m/y', function ($attribute, $value, $fail) {
                 $expirationDate = \Carbon\Carbon::createFromFormat('m/y', $value)->startOfMonth();
                 if ($expirationDate->isPast()) {
@@ -103,11 +119,13 @@ class PaymentController extends Controller
 
         // Simuler l'enregistrement (attention aux données sensibles)
         $lastPayment = Payment::latest()->first();
-        $lastPaymentId = $lastPayment->id;
-        $transactionId = substr(str_shuffle(string: str_repeat('0123456789', 5)), 0, 4).$lastPaymentId;
+        $lastPaymentId = $lastPayment ? $lastPayment->id : 1;
+        $transactionId = substr(str_shuffle(string: str_repeat('0123456789', 5)), 0, 4) . $lastPaymentId;
         Payment::create([
             'user_id' => Auth::id(),
             'amount' => $validated['amount'],
+            'titulaire_nom' => $validated['titulaire_nom'],
+            'titulaire_prenom' => $validated['titulaire_prenom'],
             'card_number' => substr($validated['card_number'], 0, 4) . '********' . substr($validated['card_number'], -4),
             'expiration_date' => \Carbon\Carbon::createFromFormat('m/y', $validated['expiration_date']),
             'cvv' => $validated['cvc'],
