@@ -1,5 +1,5 @@
-
 <nav x-data="{ open: false }" class="bg-[#FFF9F9] border-b border-[#F44171]">
+    <!-- En-tête de la navbar reste inchangé -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-24">
             <div class="flex items-center">
@@ -10,7 +10,7 @@
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
+                <!-- Navigation Links pour desktop -->
                 @auth
                     <div class="hidden space-x-8 sm:ms-10 sm:flex items-center">
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
@@ -27,13 +27,13 @@
                     <div class="hidden space-x-8 sm:ms-10 sm:flex items-center">
                         <x-nav-link :href="route('payments.index')" :active="request()->routeIs('payments.index')"
                             class="text-black hover:text-[#F44171] transition-colors {{ request()->routeIs('payments.index') ? 'border-b-2 border-[#F44171] text-black' : '' }}">
-                            {{ __('Paiments') }}
+                            {{ __('Paiements') }}
                         </x-nav-link>
                     </div>
                 @endauth
             </div>
 
-            <!-- Settings Dropdown -->
+            <!-- Settings Dropdown pour desktop -->
             <div class="hidden sm:flex sm:items-center">
                 @auth
                     <x-dropdown align="right" width="48">
@@ -51,25 +51,24 @@
                         <x-slot name="content">
                             <div class="bg-[#FFF9F9] rounded-md shadow-lg">
                                 <x-dropdown-link :href="route('profile.edit')"
-                                    class="text-gray-700 hover:bg-[#F44171] hover:[#F44171]">
+                                    class="text-gray-700 hover:bg-[#F44171] hover:text-white">
                                     {{ __('Profile') }}
                                 </x-dropdown-link>
 
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <x-dropdown-link :href="route('logout')"
-                                        class="text-gray-700 hover:bg-[#F44171] hover:text-[#F44171]"
+                                        class="text-gray-700 hover:bg-[#F44171] hover:text-white"
                                         onclick="event.preventDefault(); this.closest('form').submit();">
                                         {{ __('Log Out') }}
                                     </x-dropdown-link>
                                 </form>
                                 @can('admin')
                                 <x-dropdown-link :href="route('payments.all')"
-                                    class="text-gray-700 hover:bg-[#F44171] hover:text-[#F44171]">
-                                    {{ __('Tout les paiments') }}
+                                    class="text-gray-700 hover:bg-[#F44171] hover:text-white">
+                                    {{ __('Tous les paiements') }}
                                 </x-dropdown-link>
                                 @endcan
-
                             </div>
                         </x-slot>
                     </x-dropdown>
@@ -89,9 +88,9 @@
                 @endauth
             </div>
 
-            <!-- Mobile menu button -->
+            <!-- Bouton menu mobile -->
             <div class="flex items-center sm:hidden">
-                <button @click="open = ! open" class="p-2 rounded-md text-gray-700 hover:text-[#F44171] focus:outline-none transition duration-150 ease-in-out">
+                <button @click="open = ! open" class="p-2 rounded-md text-[#F44171] hover:bg-[#F44171]/10 focus:outline-none transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -101,49 +100,68 @@
         </div>
     </div>
 
-    <!-- Mobile menu -->
+    <!-- Menu mobile amélioré -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         @auth
-            <div class="pt-2 pb-3 space-y-1 bg-[#FFF9F9]">
-                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
-                    class="text-gray-700 hover:bg-[#F44171] hover:text-white {{ request()->routeIs('dashboard') ? 'bg-[#F44171] text-white' : '' }}">
-                    {{ __('Dashboard') }}
-                </x-responsive-nav-link>
-            </div>
-
-            <div class="pt-4 pb-1 border-t border-[#F44171]">
-                <div class="px-4">
-                    <div class="font-medium text-base text-gray-700">{{ Auth::user()->nom }} {{ Auth::user()->prenom }}</div>
-                    <div class="font-medium text-sm text-[#F44171]">{{ Auth::user()->email }}</div>
+            <div class="px-4 py-2 bg-[#FFF9F9]">
+                <div class="flex items-center space-x-3 mb-4 p-3 bg-white rounded-lg border border-[#F44171]/20">
+                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-[#F44171]/10 flex items-center justify-center text-[#F44171]">
+                        {{ strtoupper(substr(Auth::user()->prenom, 0, 1)) }}
+                    </div>
+                    <div>
+                        <div class="font-medium text-gray-800">{{ Auth::user()->nom }} {{ Auth::user()->prenom }}</div>
+                        <div class="text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                    </div>
                 </div>
 
-                <div class="mt-3 space-y-1">
-                    <x-responsive-nav-link :href="route('profile.edit')"
-                        class="text-gray-700 hover:bg-[#F44171] hover:text-white">
+                <div class="space-y-2">
+                    <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
+                        class="rounded-md">
+                        {{ __('Dashboard') }}
+                    </x-responsive-nav-link>
+
+                    <x-responsive-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')"
+                        class="rounded-md">
+                        {{ __('Produits') }}
+                    </x-responsive-nav-link>
+
+                    <x-responsive-nav-link :href="route('payments.index')" :active="request()->routeIs('payments.index')"
+                        class="rounded-md">
+                        {{ __('Paiements') }}
+                    </x-responsive-nav-link>
+
+                    <x-responsive-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')"
+                        class="rounded-md">
                         {{ __('Profile') }}
                     </x-responsive-nav-link>
 
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <x-responsive-nav-link :href="route('logout')"
-                            class="text-gray-700 hover:bg-[#F44171] hover:text-white"
-                            onclick="event.preventDefault(); this.closest('form').submit();">
-                            {{ __('Log Out') }}
+                    @can('admin')
+                        <x-responsive-nav-link :href="route('payments.all')" :active="request()->routeIs('payments.all')"
+                            class="rounded-md">
+                            {{ __('Tous les paiements') }}
                         </x-responsive-nav-link>
+                    @endcan
+
+                    <form method="POST" action="{{ route('logout') }}" class="mt-4">
+                        @csrf
+                        <button type="submit"
+                            class="w-full text-left p-3 rounded-md border border-[#F44171] text-[#F44171] hover:bg-[#F44171] hover:text-white transition-colors duration-150">
+                            {{ __('Déconnexion') }}
+                        </button>
                     </form>
                 </div>
             </div>
         @else
-            <div class="pt-2 pb-3 space-y-1 bg-[#FFF9F9]">
-                <x-responsive-nav-link :href="route('login')"
-                    class="text-gray-700 hover:bg-[#F44171] hover:text-white">
+            <div class="px-4 py-4 bg-[#FFF9F9] space-y-3">
+                <a href="{{ route('login') }}"
+                    class="block w-full p-3 text-center rounded-md border border-[#F44171] text-[#F44171] hover:bg-[#F44171] hover:text-white transition-colors duration-150">
                     {{ __('Se connecter') }}
-                </x-responsive-nav-link>
+                </a>
                 @if (Route::has('register'))
-                    <x-responsive-nav-link :href="route('register')"
-                        class="text-gray-700 hover:bg-[#F44171] hover:text-white">
+                    <a href="{{ route('register') }}"
+                        class="block w-full p-3 text-center rounded-md border border-[#F44171] text-[#F44171] hover:bg-[#F44171] hover:text-white transition-colors duration-150">
                         {{ __('S\'inscrire') }}
-                    </x-responsive-nav-link>
+                    </a>
                 @endif
             </div>
         @endauth

@@ -24,7 +24,7 @@
                             <div class="flex justify-between items-end">
                                 <div class="space-y-1">
                                     <p class="text-sm opacity-80">Titulaire</p>
-                                    <p class="font-medium">{{ Auth::user()->prenom }} {{ Auth::user()->nom }}</p>
+                                    <p class="font-medium">XXXXX XXXXX</p>
                                 </div>
                                 <div class="space-y-1">
                                     <p class="text-sm opacity-80">Expire</p>
@@ -159,6 +159,36 @@
     </div>
 
     <script>
+        // Aperçu du nom prénom du titulaire en direct
+        document.getElementById('titulaire_nom').addEventListener('input', updateCardHolder);
+        document.getElementById('titulaire_prenom').addEventListener('input', updateCardHolder);
+
+        function updateCardHolder() {
+            const nom = document.getElementById('titulaire_nom').value.toUpperCase();
+            const prenom = document.getElementById('titulaire_prenom').value.toUpperCase();
+            let displayText = 'XXXXX XXXXX';
+
+            if (nom || prenom) {
+                displayText = '';
+                if (prenom) {
+                    displayText += prenom;
+                }
+                if (nom && prenom) {
+                    displayText += ' ';
+                }
+                if (nom) {
+                    displayText += nom;
+                }
+            }
+
+            // Limiter la longueur maximale pour éviter le débordement
+            if (displayText.length > 40) {
+                displayText = displayText.substring(0, 40) + '...';
+            }
+
+            // Mettre à jour l'affichage sur la carte
+            document.querySelector('.flex.justify-between.items-end .font-medium').textContent = displayText;
+        }
         // Aperçu du numéro de carte en direct
         document.getElementById('card_number').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
