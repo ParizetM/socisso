@@ -3,10 +3,12 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaymentController;
+use App\Models\Product;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    $products = Product::where('is_available', true)->get();
+    return view('welcome', compact('products'));
 })->name('welcome');
 
 Route::middleware('XSSProtection')->group(function () {

@@ -21,8 +21,14 @@
                     @can('admin')
                     @else
                     <div class="hidden space-x-8 sm:ms-10 sm:flex items-center">
+                        <x-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')"
+                            class="text-black hover:text-[#F44171] transition-colors {{ request()->routeIs('welcome') ? 'border-b-2 border-[#F44171] text-black' : '' }}">
+                            {{ __('Produits') }}
+                        </x-nav-link>
+                    </div>
+                    <div class="hidden space-x-8 sm:ms-10 sm:flex items-center">
                         <x-nav-link :href="route('payments.index')" :active="request()->routeIs('payments.index')"
-                            class="text-black hover:text-[#F44171] transition-colors {{ request()->routeIs('dashboard') ? 'border-b-2 border-[#F44171] text-black' : '' }}">
+                            class="text-black hover:text-[#F44171] transition-colors {{ request()->routeIs('payments.index') ? 'border-b-2 border-[#F44171] text-black' : '' }}">
                             {{ __('Paiments') }}
                         </x-nav-link>
                     </div>
@@ -48,21 +54,21 @@
                         <x-slot name="content">
                             <div class="bg-[#FFF9F9] rounded-md shadow-lg">
                                 <x-dropdown-link :href="route('profile.edit')"
-                                    class="text-gray-700 hover:bg-[#F44171] hover:text-white">
+                                    class="text-gray-700 hover:bg-[#F44171] hover:[#F44171]">
                                     {{ __('Profile') }}
                                 </x-dropdown-link>
 
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <x-dropdown-link :href="route('logout')"
-                                        class="text-gray-700 hover:bg-[#F44171] hover:text-white"
+                                        class="text-gray-700 hover:bg-[#F44171] hover:text-[#F44171]"
                                         onclick="event.preventDefault(); this.closest('form').submit();">
                                         {{ __('Log Out') }}
                                     </x-dropdown-link>
                                 </form>
                                 @can('admin')
                                 <x-dropdown-link :href="route('payments.all')"
-                                    class="text-gray-700 hover:bg-[#F44171] hover:text-white">
+                                    class="text-gray-700 hover:bg-[#F44171] hover:text-[#F44171]">
                                     {{ __('Tout les paiments') }}
                                 </x-dropdown-link>
                                 @endcan
