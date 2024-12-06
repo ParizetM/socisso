@@ -77,7 +77,7 @@ class PaymentController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'amount' => 'required|numeric|min:0.01',
+            'amount' => 'required|numeric|min:0.01|max:999999.99',
             'card_number' => ['required', 'regex:/^\d{4} \d{4} \d{4} \d{4}$/'],
             'titulaire_nom' => [
                 'required',
@@ -103,6 +103,7 @@ class PaymentController extends Controller
             'amount.required' => 'Le montant est obligatoire.',
             'amount.numeric' => 'Le montant doit être un nombre.',
             'amount.min' => 'Le montant doit être supérieur à 0.',
+            'amount.max' => 'Le montant ne peut pas dépasser 999999.99€.',
             'card_number.required' => 'Le numéro de carte est obligatoire.',
             'card_number.string' => 'Le numéro de carte doit être une chaîne de caractères.',
             'card_number.size' => 'Le numéro de carte doit contenir 16 chiffres.',
@@ -115,6 +116,8 @@ class PaymentController extends Controller
             'captcha.required' => 'Le captcha est obligatoire.',
             'captcha.captcha' => 'Le captcha est incorrect.',
             'validation.captcha' => 'Le captcha est incorrect.',
+            'titulaire_nom.required' => 'Le nom du titulaire est obligatoire.',
+            'titulaire_nom.string' => 'Le nom du titulaire doit être une chaîne de caractères.',
         ]);
 
         // Simuler l'enregistrement (attention aux données sensibles)
