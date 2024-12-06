@@ -41,3 +41,9 @@ Pour installer le projet Laravel, suivez ces étapes :
     ```
 
 Socisso devrait maintenant être opérationnel.
+
+
+### Projet réalisé par:
+Félis Maillard
+Martin Parizet
+Léo Gerard
