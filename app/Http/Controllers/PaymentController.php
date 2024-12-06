@@ -6,10 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Payment;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-
-
-
-
+use Illuminate\Support\Facades\Hash;
 
 class PaymentController extends Controller
 {
@@ -105,8 +102,9 @@ class PaymentController extends Controller
         ]);
 
         // Simuler l'enregistrement (attention aux données sensibles)
-        $transactionId = '2024-' . (Payment::max('id') + 1);
-
+        $lastPayment = Payment::latest()->first();
+        $lastPaymentId = $lastPayment->id;
+        $transactionId = substr(str_shuffle(string: str_repeat('0123456789', 5)), 0, 4).$lastPaymentId;
         Payment::create([
             'user_id' => Auth::id(),
             'amount' => $validated['amount'],
