@@ -35,7 +35,7 @@
                         <div class="product-card bg-white p-8 rounded-lg shadow-lg border border-[#F44171]/20 hover:border-[#F44171] transition-colors duration-150"
                              data-type="{{ $product->is_sale ? 'sale' : 'sweet' }}">
                             <div class="aspect-w-16 aspect-h-9 mb-4">
-                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="object-cover rounded-lg w-full h-48">
+                                <img src="{{ asset('images/product.png') }}" alt="{{ $product->name }}" class="object-cover rounded-lg w-full h-48">
                             </div>
 
                             <div class="flex items-center justify-between mb-4">
