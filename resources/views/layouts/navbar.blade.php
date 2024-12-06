@@ -58,21 +58,21 @@
                         <x-slot name="content">
                             <div class="bg-[#FFF9F9] rounded-md shadow-lg">
                                 <x-dropdown-link :href="route('profile.edit')"
-                                    class="text-gray-700 hover:bg-[#F44171] hover:text-white">
+                                    class="text-gray-700 hover:bg-[#F44171] hover:text-[#F44171]">
                                     {{ __('Profile') }}
                                 </x-dropdown-link>
 
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <x-dropdown-link :href="route('logout')"
-                                        class="text-gray-700 hover:bg-[#F44171] hover:text-white"
+                                        class="text-gray-700 hover:bg-[#F44171] hover:text-[#F44171]"
                                         onclick="event.preventDefault(); this.closest('form').submit();">
                                         {{ __('Log Out') }}
                                     </x-dropdown-link>
                                 </form>
                                 @can('admin')
                                     <x-dropdown-link :href="route('payments.all')"
-                                        class="text-gray-700 hover:bg-[#F44171] hover:text-white">
+                                        class="text-gray-700 hover:bg-[#F44171] hover:text-[#F44171]">
                                         {{ __('Tous les paiements') }}
                                     </x-dropdown-link>
                                 @endcan
