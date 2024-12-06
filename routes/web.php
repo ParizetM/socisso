@@ -24,6 +24,7 @@ Route::middleware('XSSProtection')->group(function () {
 
     Route::middleware(['auth'])->group(function () {
         // Paiements pour un utilisateur
+
         Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
         Route::middleware('can:admin')->group(function () {
             Route::get('/admin/payments', [PaymentController::class, 'allPayments'])->name('payments.all');

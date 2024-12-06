@@ -1,4 +1,9 @@
 <x-app-layout>
+    @can('admin')
+        @php
+            header('Location: /admin/payments');
+        @endphp
+    @endcan
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-[#FFF9F9] overflow-hidden shadow-sm sm:rounded-lg border border-[#F44171]">
